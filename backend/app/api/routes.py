@@ -86,16 +86,16 @@ async def process_jobs_cron():
     did_work = False
     
     # 1. High Priority
-    job_id_bytes = await redis_client.lpop("queue:immediate:high")
-    if job_id_bytes:
-        await process_job(job_id_bytes.decode('utf-8'))
+    job_id_str = await redis_client.lpop("queue:immediate:high")
+    if job_id_str:
+        await process_job(job_id_str)
         did_work = True
         
     # 2. Normal Priority (if we have time/capacity)
     if not did_work:
-        job_id_bytes = await redis_client.lpop("queue:immediate")
-        if job_id_bytes:
-            await process_job(job_id_bytes.decode('utf-8'))
+        job_id_str = await redis_client.lpop("queue:immediate")
+        if job_id_str:
+            await process_job(job_id_str)
             did_work = True
             
     return {"status": "Cron run completed", "did_work": did_work}

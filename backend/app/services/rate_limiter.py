@@ -7,11 +7,15 @@ class RateLimiter:
         self.window = window
 
     async def is_allowed(self, user_id: str) -> bool:
-        key = f"ratelimit:{user_id}"
-        current = await redis_client.incr(key)
-        if current == 1:
-            await redis_client.expire(key, self.window)
-        
-        return current <= self.limit
+        try:
+            key = f"ratelimit:{user_id}"
+            current = await redis_client.incr(key)
+            if current == 1:
+                await redis_client.expire(key, self.window)
+            
+            return current <= self.limit
+        except Exception as e:
+            print(f"Rate Limiter Error (Allowing Request): {e}")
+            return True
 
 rate_limiter = RateLimiter()

@@ -31,13 +31,16 @@ class QueueService:
             print("Stats: Pushed to Redis")
             
             # 3. Publish Event
-            print("Stats: Publishing Event...")
-            await redis_client.publish("events:jobs", json.dumps({
-                "job_id": job.id,
-                "status": job.status,
-                "user_id": job.user_id
-            }))
-            print("Stats: Event Published")
+            try:
+                print("Stats: Publishing Event...")
+                await redis_client.publish("events:jobs", json.dumps({
+                    "job_id": job.id,
+                    "status": job.status,
+                    "user_id": job.user_id
+                }))
+                print("Stats: Event Published")
+            except Exception as pe:
+                print(f"Stats: Publish Failed (Non-critical): {pe}")
             
             return job
         except Exception as e:

@@ -23,9 +23,12 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const WS_URL = API_URL.replace(/^http/, 'ws');
+
   const fetchStats = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/stats");
+      const res = await fetch(`${API_URL}/api/stats`);
       const data = await res.json();
       setStats(data);
     } catch (e) {
@@ -38,7 +41,7 @@ function App() {
     const interval = setInterval(fetchStats, 5000); // Polling backup
 
     // WebSocket
-    ws.current = new WebSocket("ws://localhost:8000/api/ws");
+    ws.current = new WebSocket(`${WS_URL}/api/ws`);
 
     ws.current.onopen = () => console.log("WS Connected");
     ws.current.onmessage = (event) => {

@@ -42,7 +42,8 @@ const JobForm: React.FC = () => {
 
             console.log("Sending body:", body);
 
-            const res = await fetch("http://localhost:8000/api/jobs", {
+            const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+            const res = await fetch(`${API_URL}/api/jobs`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)

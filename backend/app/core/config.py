@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     REDIS_HOST: str = "redis"
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
+    REDIS_PASSWORD: str | None = None
     
     # MongoDB
     MONGO_URL: str = "mongodb://mongo:27017"

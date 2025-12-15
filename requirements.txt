@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+redis
+motor
+pydantic
+pydantic-settings
+python-multipart
+requests
+upstash-redis

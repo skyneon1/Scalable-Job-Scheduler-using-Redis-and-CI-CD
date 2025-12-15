@@ -10,6 +10,7 @@ class Database:
         # Vercel/AWS Lambda needs Certifi for reliable SSL
         self.client = AsyncIOMotorClient(
             settings.MONGO_URL,
+            tls=True,
             tlsCAFile=certifi.where()
         )
         self.db = self.client[settings.MONGO_DB_NAME]

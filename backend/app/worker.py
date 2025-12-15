@@ -61,7 +61,6 @@ class Worker:
                     print(f"Moved delayed job {job_id} to {queue}")
 
     async def process_job(self, job_id: str):
-        from bson import ObjectId
         
         # 1. Acquire Lock
         lock_key = f"lock:job:{job_id}"
@@ -108,7 +107,6 @@ class Worker:
             await redis_client.delete(lock_key)
 
     async def handle_failure(self, job_id: str, error: str):
-        from bson import ObjectId
         
         job = await db.db["jobs"].find_one({"_id": ObjectId(job_id)})
         retry_count = job.get("retry_count", 0)

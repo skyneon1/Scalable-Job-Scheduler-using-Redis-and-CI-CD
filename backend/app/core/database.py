@@ -6,7 +6,12 @@ class Database:
     db = None
 
     def connect(self):
-        self.client = AsyncIOMotorClient(settings.MONGO_URL)
+        # Vercel/AWS Lambda sometimes needs explicit TLS settings
+        self.client = AsyncIOMotorClient(
+            settings.MONGO_URL,
+            tls=True,
+            tlsAllowInvalidCertificates=True
+        )
         self.db = self.client[settings.MONGO_DB_NAME]
         print("Connected to MongoDB")
 

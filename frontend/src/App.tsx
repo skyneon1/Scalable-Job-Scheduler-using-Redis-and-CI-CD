@@ -23,11 +23,22 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-  const WS_URL = API_URL.replace(/^http/, 'ws');
+  // Determine API Base URL (Relative for Vercel/Proxy, Absolute if env var set)
+  const API_URL = import.meta.env.VITE_API_URL || "";
+
+  // Determine WebSocket URL automatically based on window location if relative
+  const getWsUrl = () => {
+    if (API_URL.startsWith('http')) {
+      return API_URL.replace(/^http/, 'ws');
+    }
+    // Relative path strategy for Vercel/Local Proxy
+    const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    return `${protocol}${window.location.host}`;
+  };
 
   const fetchStats = async () => {
     try {
+      // Use relative path locally (via proxy) and on Vercel
       const res = await fetch(`${API_URL}/api/stats`);
       const data = await res.json();
       setStats(data);
@@ -41,7 +52,9 @@ function App() {
     const interval = setInterval(fetchStats, 5000); // Polling backup
 
     // WebSocket
-    ws.current = new WebSocket(`${WS_URL}/api/ws`);
+    const wsUrl = `${getWsUrl()}/api/ws`;
+    console.log("Connecting WS:", wsUrl);
+    ws.current = new WebSocket(wsUrl);
 
     ws.current.onopen = () => console.log("WS Connected");
     ws.current.onmessage = (event) => {

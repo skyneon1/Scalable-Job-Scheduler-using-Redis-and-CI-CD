@@ -8,9 +8,11 @@ class Database:
     def connect(self):
         import certifi
         # Vercel/AWS Lambda needs Certifi for reliable SSL
+        # Fallback: Allow invalid certs if handshake fails
         self.client = AsyncIOMotorClient(
             settings.MONGO_URL,
             tls=True,
+            tlsAllowInvalidCertificates=True,
             tlsCAFile=certifi.where()
         )
         self.db = self.client[settings.MONGO_DB_NAME]

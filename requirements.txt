@@ -7,3 +7,4 @@ pydantic-settings
 python-multipart
 requests
 upstash-redis
+certifi

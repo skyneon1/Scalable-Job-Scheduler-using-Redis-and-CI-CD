@@ -1,0 +1,148 @@
+:root {
+  /* Default Dark Mode */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --card-bg: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --border: #334155;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --nav-bg: rgba(15, 23, 42, 0.8);
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --card-bg: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e2e8f0;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --nav-bg: rgba(255, 255, 255, 0.8);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+input,
+select,
+textarea {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 0.75rem;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  color: var(--text-primary);
+}
+
+header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+pre {
+  background: #0f172a;
+  padding: 1rem;
+  overflow: auto;
+  max-height: 200px;
+  border-radius: 8px;
+  color: #f8fafc;
+}
+
+/* Status Colors */
+.status-completed {
+  color: var(--success);
+}
+
+.status-failed {
+  color: var(--danger);
+}
+
+.status-queued {
+  color: var(--warning);
+}
+
+.status-delayed {
+  color: var(--text-secondary);
+}
+
+.status-active {
+  color: var(--accent);
+}

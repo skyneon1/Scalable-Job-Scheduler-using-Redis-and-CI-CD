@@ -7,6 +7,7 @@ from app.models.job import Job, JobStatus, JobCreate
 class QueueService:
     async def enqueue_job(self, job_data: JobCreate) -> Job:
         try:
+            print(f"Stats: Enqueueing job for {job_data.user_id}")
             # 1. Create Job in MongoDB
             job_dict = job_data.model_dump()
             job_dict["status"] = JobStatus.QUEUED
@@ -17,19 +18,26 @@ class QueueService:
             if job_data.scheduled_at:
                 job_dict["status"] = JobStatus.DELAYED
 
+            print("Stats: Insert into Mongo...")
             result = await db.db["jobs"].insert_one(job_dict)
             job_dict["_id"] = str(result.inserted_id)
+            print(f"Stats: Mongo Inserted ID: {job_dict['_id']}")
+            
             job = Job(**job_dict)
 
             # 2. Push to Redis
+            print("Stats: Pushing to Redis...")
             await self._push_to_redis(job)
+            print("Stats: Pushed to Redis")
             
             # 3. Publish Event
+            print("Stats: Publishing Event...")
             await redis_client.publish("events:jobs", json.dumps({
                 "job_id": job.id,
                 "status": job.status,
                 "user_id": job.user_id
             }))
+            print("Stats: Event Published")
             
             return job
         except Exception as e:
